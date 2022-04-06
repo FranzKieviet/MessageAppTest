@@ -38,6 +38,7 @@ public class ClientApplication extends Application implements SocketManager {
         clientController = fxmlLoader.getController();
         clientController.setConnection(connection);
         clientController.setStage(stage);
+        clientController.setScene(scene);
     }
     
     public static void main(String[] args) {
