@@ -27,7 +27,6 @@ public class ClientController {
     private Button send;
     
     public void initialize() {
-        // TODO initialize UI elements here (delete method if not needed)
         display.setLayoutX(0);
         display.setLayoutY(0);
         
