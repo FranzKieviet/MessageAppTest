@@ -80,6 +80,8 @@ public class Server extends Application implements SocketManager {
                 try {
                     // Listen for a connection request
                     Socket socket = finalServerSocket.accept();
+                    Platform.runLater(() -> ta.appendText(
+                            socket.getInetAddress().getHostAddress() + " has connected."));
                     Connection connection = new Connection(socket, this);
                     connections.add(connection);
                 }
