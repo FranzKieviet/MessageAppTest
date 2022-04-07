@@ -47,13 +47,11 @@ public class ClientApplication extends Application implements SocketManager {
     
     @Override
     public void handleReceivedMessage(Socket socket, String message) {
-        // TODO handle when a message is received
+        clientController.displayMessage(message);
     }
     
     @Override
     public void handleConnectionClosed(Socket socket, Connection connection) {
-        // TODO handle when the connection to the server is closed
-        // maybe create and call a method in the controller class that displays to the user that the connection has been
-        // closed and disable input
+        clientController.closeConnection();
     }
 }

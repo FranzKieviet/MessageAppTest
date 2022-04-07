@@ -41,8 +41,7 @@ public class Connection {
     }
     
     public synchronized void sendMessage(String message) throws IOException {
-        new DataOutputStream(socket.getOutputStream()).writeUTF(socket.getInetAddress().getHostAddress() + ": "
-                + message);
+        new DataOutputStream(socket.getOutputStream()).writeUTF(message);
     }
     
     public synchronized void closeSocket() {

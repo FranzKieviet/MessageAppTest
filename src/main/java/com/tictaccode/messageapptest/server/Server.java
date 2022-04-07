@@ -81,7 +81,7 @@ public class Server extends Application implements SocketManager {
                     // Listen for a connection request
                     Socket socket = finalServerSocket.accept();
                     Platform.runLater(() -> ta.appendText(
-                            socket.getInetAddress().getHostAddress() + " has connected."));
+                            socket.getInetAddress().getHostAddress() + " has connected.\n"));
                     Connection connection = new Connection(socket, this);
                     connections.add(connection);
                 }
@@ -92,12 +92,12 @@ public class Server extends Application implements SocketManager {
     
     @Override
     public synchronized void handleReceivedMessage(Socket socket, String message) {
-        Platform.runLater(() -> ta.appendText(socket.getInetAddress().getHostAddress() + ": " + message));
+        Platform.runLater(() -> ta.appendText(socket.getInetAddress().getHostAddress() + ": " + message + '\n'));
         
         for (Connection connection : connections) {
             if (!connection.hasSocket(socket)) {
                 try {
-                    connection.sendMessage(message);
+                    connection.sendMessage(socket.getInetAddress().getHostAddress() + ": " + message);
                 }
                 catch (IOException e) {}
             }
@@ -106,7 +106,7 @@ public class Server extends Application implements SocketManager {
     
     @Override
     public synchronized void handleConnectionClosed(Socket socket, Connection connection) {
-        Platform.runLater(() -> ta.appendText(socket.getInetAddress().getHostAddress() + " has disconnected."));
+        Platform.runLater(() -> ta.appendText(socket.getInetAddress().getHostAddress() + " has disconnected.\n"));
         connections.remove(connection);
     }
 

@@ -76,7 +76,7 @@ public class ClientController {
     }
     
     public void displayMessage(String message) {
-        display.appendText(message);
+        display.appendText(message + '\n');
     }
     
     public void sendMessage(ActionEvent actionEvent) {
@@ -98,7 +98,6 @@ public class ClientController {
     public void closeConnection() {
         input.setDisable(true);
         send.setDisable(true);
-        connection.closeSocket();
-        displayMessage("Disconnected from the server.");
+        displayMessage("Disconnected from the server.\n");
     }
 }
