@@ -1,5 +1,6 @@
 package com.tictaccode.messageapptest.client;
 
+import com.tictaccode.messageapptest.ComponentMessages;
 import com.tictaccode.messageapptest.Connection;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -11,6 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+
+import static com.tictaccode.messageapptest.ComponentMessages.CREATE_LOBBY;
 
 public class ClientController {
     private Connection connection;
@@ -80,16 +83,17 @@ public class ClientController {
     }
     
     public void sendMessage(ActionEvent actionEvent) {
-        String message = input.getText().trim();
+        //String message = input.getText().trim();
+        ComponentMessages message = CREATE_LOBBY;
         
-        if (message.length() > 0) {
+        if (message.equals(CREATE_LOBBY)) {
             try {
                 connection.sendMessage(message);
             }
             catch (IOException e) {
                 closeConnection();
             }
-            displayMessage(message);
+            displayMessage(String.valueOf(message));
         }
         
         input.setText("");

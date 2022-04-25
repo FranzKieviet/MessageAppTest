@@ -1,8 +1,6 @@
 package com.tictaccode.messageapptest;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 public class Connection {
@@ -20,11 +18,13 @@ public class Connection {
         listener = new Thread(() -> {
             while (!socket.isClosed()) {
                 try {
-                    String message = getMessage();
+                    ComponentMessages message = getMessage();
                     socketManager.handleReceivedMessage(socket, message);
                 }
                 catch (IOException e) {
                     closeSocket();
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
@@ -36,12 +36,15 @@ public class Connection {
         return socket.equals(otherSocket);
     }
     
-    private String getMessage() throws IOException {
-        return new DataInputStream(socket.getInputStream()).readUTF();
+    private ComponentMessages getMessage() throws IOException, ClassNotFoundException {
+        return (ComponentMessages) new ObjectInputStream(socket.getInputStream()).readObject();
+       // return new DataInputStream(socket.getInputStream()).readUTF();
     }
-    
-    public synchronized void sendMessage(String message) throws IOException {
-        new DataOutputStream(socket.getOutputStream()).writeUTF(message);
+
+
+
+    public synchronized void sendMessage(ComponentMessages message) throws IOException {
+        new ObjectOutputStream(socket.getOutputStream()).writeObject(message);
     }
     
     public synchronized void closeSocket() {

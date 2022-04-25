@@ -3,6 +3,6 @@ module com.tictaccode.messageapptest {
     requires javafx.fxml;
     
     
-    opens com.tictaccode.messageapptest.client to javafx.fxml;
-    exports com.tictaccode.messageapptest.client;
+    opens com.tictaccode.messageapptest.server to javafx.fxml;
+    exports com.tictaccode.messageapptest.server;
 }

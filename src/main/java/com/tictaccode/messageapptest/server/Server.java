@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.tictaccode.messageapptest.ComponentMessages;
 import com.tictaccode.messageapptest.Connection;
 import com.tictaccode.messageapptest.SocketManager;
 import javafx.application.Application;
@@ -17,6 +18,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import static com.tictaccode.messageapptest.ComponentMessages.CREATE_LOBBY;
+import static com.tictaccode.messageapptest.ComponentMessages.JOIN_LOBBY;
 
 public class Server extends Application implements SocketManager {
     
@@ -89,21 +93,31 @@ public class Server extends Application implements SocketManager {
             }
         }).start();
     }
-    
+
     @Override
-    public synchronized void handleReceivedMessage(Socket socket, String message) {
-        Platform.runLater(() -> ta.appendText(socket.getInetAddress().getHostAddress() + ": " + message + '\n'));
-        
+    public synchronized void handleReceivedMessage(Socket socket, ComponentMessages message) {
+        ComponentMessages finalMessage = message;
+        Platform.runLater(() -> ta.appendText(socket.getInetAddress().getHostAddress() + ": " + String.valueOf(finalMessage) + '\n'));
+
         for (Connection connection : connections) {
             if (!connection.hasSocket(socket)) {
                 try {
-                    connection.sendMessage(socket.getInetAddress().getHostAddress() + ": " + message);
+                    connection.sendMessage(message);
+//                    connection.sendMessage(socket.getInetAddress().getHostAddress() + ": " + message);
+                }
+                catch (IOException e) {}
+            }
+            else{
+                message = JOIN_LOBBY;
+                try {
+                    connection.sendMessage(message);
+//                    connection.sendMessage(socket.getInetAddress().getHostAddress() + ": " + message);
                 }
                 catch (IOException e) {}
             }
         }
     }
-    
+
     @Override
     public synchronized void handleConnectionClosed(Socket socket, Connection connection) {
         Platform.runLater(() -> ta.appendText(socket.getInetAddress().getHostAddress() + " has disconnected.\n"));

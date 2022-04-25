@@ -1,5 +1,6 @@
 package com.tictaccode.messageapptest.client;
 
+import com.tictaccode.messageapptest.ComponentMessages;
 import com.tictaccode.messageapptest.Connection;
 import com.tictaccode.messageapptest.SocketManager;
 import javafx.application.Application;
@@ -46,8 +47,8 @@ public class ClientApplication extends Application implements SocketManager {
     }
     
     @Override
-    public void handleReceivedMessage(Socket socket, String message) {
-        clientController.displayMessage(message);
+    public void handleReceivedMessage(Socket socket, ComponentMessages message) {
+        clientController.displayMessage(String.valueOf(message));
     }
     
     @Override
